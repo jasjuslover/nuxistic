@@ -161,6 +161,7 @@
           <a
             class="dropdown-item"
             href="#"
+            @click="logout"
             data-toggle="modal"
             data-target="#logoutModal"
           >
@@ -174,5 +175,16 @@
 </template>
 
 <script>
-export default {};
+import { mapMutations } from "vuex";
+export default {
+  methods: {
+    ...mapMutations(["SET_IS_AUTH"]), //LOAD MUTATION DARI INDEX.JS
+    //KITA GUNAKAN ASYNC AGAR BISA MENUNGGU SEBUAH PROSES SELESAI, KEMUDIAN CODE SELANJUTNYA DIJALANKAN
+    async logout() {
+      await this.$auth.logout(); //JADI KITA TUNGGU DULU PROSES LOGOUT SELESAI
+      this.SET_IS_AUTH(false); //KEMUDIAN SET ISAUTH JADI FALSE
+      this.$router.push("/login"); //DAN REDIRECT KE HALAMAN LOGIN
+    },
+  },
+};
 </script>

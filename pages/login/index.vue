@@ -19,6 +19,7 @@
                         id="exampleInputEmail"
                         aria-describedby="emailHelp"
                         placeholder="Enter Email Address..."
+                        v-model="auth.email"
                       />
                     </div>
                     <div class="form-group">
@@ -27,6 +28,7 @@
                         class="form-control form-control-user"
                         id="exampleInputPassword"
                         placeholder="Password"
+                        v-model="auth.password"
                       />
                     </div>
                     <div class="form-group">
@@ -114,6 +116,7 @@ export default {
           },
         })
         .then(() => {
+          console.log("huwiw");
           //JIKA BERHASIL, KITA SET TRUE IS AUTH-NYA
           this.SET_IS_AUTH(true);
           //LALU REDIRECT KE HALAMAN UTAMA / DAHSBOARD
