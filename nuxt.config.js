@@ -46,5 +46,30 @@ export default {
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {}
+  build: {},
+  auth: {
+    strategies: {
+      //METHOD LOGIN YANG AKAN KITA GUNAKAN
+      local: {
+        //DIMANA ENDPOINTNYA ADALAH
+        endpoints: {
+          //UNTUK LOGIN PADA BAGIAN URL, KITA MASUKKAN URL LOGIN DARI API YANG SUDAH KITA BUAT
+          //SEDANGKAN PROPERTYNAME ADALAH PROPERTY YANG INGIN KITA AMBIL VALUENYA
+          //DALAM HAL INI, LOGIN MENGHARAPKAN TOKEN, SEDANGKAN PADA API KITA ME-RETURN TOKEN DI DALAM OBJECT DATA
+          login: { url: "/login", method: "post", propertyName: "data" },
+          logout: { url: "/logout", method: "post" },
+          user: { url: "/users/login", method: "get", propertyName: "data" }
+        },
+        tokenRequired: true,
+        tokenType: "Bearer "
+      }
+    }
+  },
+  axios: {
+    baseURL: "http://nuxistic-backend.test/"
+  },
+  //MIDDLEWARE UNTUK MENGECEK SUDAH LOGIN ATAU BELUM, KITA SET GLOBAL
+  router: {
+    middleware: ["auth"]
+  }
 };

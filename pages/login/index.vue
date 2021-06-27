@@ -41,7 +41,11 @@
                         >
                       </div>
                     </div>
-                    <a href="#" class="btn btn-primary btn-user btn-block">
+                    <a
+                      href="javascript:void(0)"
+                      @click="submit"
+                      class="btn btn-primary btn-user btn-block"
+                    >
                       Login
                     </a>
                     <hr />
@@ -76,5 +80,46 @@
   </div>
 </template>
 <script>
-export default {};
+import { mapMutations } from "vuex";
+
+export default {
+  auth: false, //JADI KITA SET FALSE AGAR MIDDLEWARE TIDAK DITERAPKAN PADA HALAMAN INI
+  data() {
+    return {
+      //VARIABLE UNTUK MENAMPUNG INPUTAN USER
+      auth: {
+        email: null,
+        password: null,
+      },
+    };
+  },
+  mounted() {
+    //KITA LAKUKAN PENGECEK, JIKA SUDAH LOGIN
+    if (this.$auth.loggedIn) {
+      //MAKA REDIRECT KE HALAMAN UTAMA ATAU DASHBOARD
+      this.$router.push("/");
+    }
+  },
+  methods: {
+    ...mapMutations(["SET_IS_AUTH"]), //LOAD MUTATIONS DARI ROOT VUEX (STORE/INDEX.JS)
+    //JIKA TOMBOL LOGIN DITEKAN, MAKA METHOD INI AKAN DIJALANKAN
+    submit() {
+      //MELAKUKAN PROSES LOGIN, DENGAN MENGGUNAKAN STRATEGIES LOCAL YANG ADA DI NUXT CONFIG
+      //DAN MENGIRIMKAN DATA BERUPA EMAIL DAN PASSWORD
+      this.$auth
+        .loginWith("local", {
+          data: {
+            email: this.auth.email,
+            password: this.auth.password,
+          },
+        })
+        .then(() => {
+          //JIKA BERHASIL, KITA SET TRUE IS AUTH-NYA
+          this.SET_IS_AUTH(true);
+          //LALU REDIRECT KE HALAMAN UTAMA / DAHSBOARD
+          this.$router.push("/");
+        });
+    },
+  },
+};
 </script>
